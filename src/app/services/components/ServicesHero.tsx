@@ -1,14 +1,14 @@
 export default function ServicesHero() {
   return (
-    <section className="py-16 bg-gradient-to-b from-muted to-background page-hero reveal">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <span className="font-inter text-sm uppercase tracking-wider text-primary font-medium mb-4 block">
+    <section className="bg-gradient-to-b from-muted to-background page-hero reveal">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+        <span className="font-inter text-xs sm:text-sm uppercase tracking-wider text-primary font-medium mb-3 sm:mb-4 block">
           Our Services
         </span>
-        <h1 className="font-bricolage text-5xl md:text-6xl font-bold text-foreground mb-6">
+        <h1 className="font-bricolage text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6">
           Digital Solutions That Scale
         </h1>
-        <p className="font-inter text-xl text-muted-foreground max-w-3xl mx-auto">
+        <p className="font-inter text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
           From stunning websites to powerful web and mobile applications — TechAntum delivers end-to-end software development tailored to your business goals.
         </p>
       </div>

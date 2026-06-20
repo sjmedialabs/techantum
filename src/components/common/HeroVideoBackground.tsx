@@ -60,9 +60,9 @@ export default function HeroVideoBackground() {
           <source src={VIDEO_FALLBACK} type="video/mp4" />
         </video>
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-primary/20" />
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/15" />
-      <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/95 to-background/70" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background/40 to-secondary/20" />
+      <div className="absolute inset-0 bg-background/30 md:bg-background/20 backdrop-blur-[2px]" />
     </div>
   );
 }

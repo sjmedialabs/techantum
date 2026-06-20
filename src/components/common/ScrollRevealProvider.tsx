@@ -29,14 +29,18 @@ export default function ScrollRevealProvider() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
     );
 
     const observeAll = () => {
       document.querySelectorAll(REVEAL_SELECTORS).forEach((el) => {
         if (el.classList.contains('active')) return;
+        if (el.classList.contains('page-hero')) {
+          el.classList.add('active');
+          return;
+        }
         const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+        const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
         if (inView) {
           el.classList.add('active');
         } else {

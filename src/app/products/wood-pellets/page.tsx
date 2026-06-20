@@ -64,8 +64,8 @@ export default function WoodPelletsPage() {
     <div className="min-h-screen bg-background">
       <Header />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="relative bg-gradient-to-br from-primary/10 via-background to-secondary/10 pt-28 pb-12 md:pt-32 md:pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-6">
             <Link href="/products" className="text-muted-foreground hover:text-foreground transition-colors">
               <Icon name="ArrowLeftIcon" size={20} />

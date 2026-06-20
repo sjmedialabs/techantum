@@ -33,23 +33,23 @@ export default function Header() {
         isScrolled ? 'navbar-glass-scrolled' : 'navbar-glass'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg">
-              <span className="font-bricolage font-bold text-lg text-primary-foreground">T</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg shrink-0">
+              <span className="font-bricolage font-bold text-base sm:text-lg text-primary-foreground">T</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bricolage font-bold text-base text-foreground leading-tight">
+            <div className="flex flex-col min-w-0">
+              <span className="font-bricolage font-bold text-sm sm:text-base text-foreground leading-tight truncate">
                 TechAntum
               </span>
-              <span className="font-inter text-xs text-muted-foreground leading-tight">
+              <span className="font-inter text-[10px] sm:text-xs text-muted-foreground leading-tight hidden sm:block">
                 Digital Solutions
               </span>
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks?.map((link) => (
               <Link
                 key={link?.id}
@@ -101,7 +101,7 @@ export default function Header() {
 
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-foreground"
+            className="lg:hidden p-2 -mr-2 text-foreground"
             aria-label="Toggle menu"
           >
             <Icon name={isMenuOpen ? 'XMarkIcon' : 'Bars3Icon'} size={24} />
@@ -109,8 +109,8 @@ export default function Header() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden py-6 border-t border-border bg-white">
-            <nav className="flex flex-col gap-4">
+          <div className="lg:hidden py-4 sm:py-6 border-t border-white/40 bg-white/90 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <nav className="flex flex-col gap-1 sm:gap-2">
               {navLinks?.map((link) => (
                 <Link
                   key={link?.id}
