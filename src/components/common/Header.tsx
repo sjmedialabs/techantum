@@ -109,7 +109,7 @@ export default function Header() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden py-6 border-t border-white/40 bg-white/50 backdrop-blur-xl">
+          <div className="md:hidden py-6 border-t border-border bg-white">
             <nav className="flex flex-col gap-4">
               {navLinks?.map((link) => (
                 <Link

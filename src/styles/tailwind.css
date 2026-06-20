@@ -72,17 +72,13 @@
   }
 
   .navbar-glass {
-    @apply bg-white/70 backdrop-blur-2xl border-b border-white/50;
-    box-shadow:
-      0 4px 30px rgba(79, 70, 229, 0.06),
-      inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    @apply bg-white border-b border-border;
+    box-shadow: 0 1px 12px rgba(17, 24, 39, 0.06);
   }
 
   .navbar-glass-scrolled {
-    @apply bg-white/85 backdrop-blur-2xl border-b border-white/60;
-    box-shadow:
-      0 8px 32px rgba(79, 70, 229, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    @apply bg-white border-b border-border;
+    box-shadow: 0 4px 20px rgba(17, 24, 39, 0.08);
   }
 
   /* Gradient text for headlines */
