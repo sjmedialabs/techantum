@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const VIDEO_SRC = '/videos/hero-bg.mp4';
 const VIDEO_FALLBACK =
-  'https://assets.mixkit.co/videos/914/914-720.mp4';
+  'https://assets.mixkit.co/videos/19639/19639-720.mp4';
 const POSTER_SRC = '/videos/hero-bg-poster.jpg';
 
 export default function HeroVideoBackground() {
@@ -60,8 +60,9 @@ export default function HeroVideoBackground() {
           <source src={VIDEO_FALLBACK} type="video/mp4" />
         </video>
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/88 to-primary/15" />
-      <div className="absolute inset-0 bg-background/25 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-primary/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/15" />
+      <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]" />
     </div>
   );
 }

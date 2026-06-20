@@ -30,7 +30,7 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/90 backdrop-blur-xl shadow-md border-b border-border/50' : 'bg-background/80 backdrop-blur-sm'
+        isScrolled ? 'navbar-glass-scrolled' : 'navbar-glass'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -109,7 +109,7 @@ export default function Header() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden py-6 border-t border-border">
+          <div className="md:hidden py-6 border-t border-white/40 bg-white/50 backdrop-blur-xl">
             <nav className="flex flex-col gap-4">
               {navLinks?.map((link) => (
                 <Link
