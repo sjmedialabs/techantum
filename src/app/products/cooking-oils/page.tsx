@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
@@ -82,7 +82,7 @@ export default function CookingOilsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <SiteHeader />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary/10 via-background to-secondary/10 pt-28 pb-12 md:pt-32 md:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -196,7 +196,7 @@ export default function CookingOilsPage() {
           </div>
         </div>
       </section>
-      <Footer />
+      <SiteFooter />
     </div>);
 
 }

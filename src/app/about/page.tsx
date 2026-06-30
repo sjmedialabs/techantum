@@ -1,5 +1,5 @@
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import AboutHero from './components/AboutHero';
 import MissionSection from './components/MissionSection';
 import TimelineSection from './components/TimelineSection';
@@ -10,7 +10,7 @@ import CertificationsSection from './components/CertificationsSection';
 export default function AboutPage() {
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen pt-20">
         <AboutHero />
         <MissionSection />
@@ -19,7 +19,7 @@ export default function AboutPage() {
         <PartnerCountriesGrid />
         <CertificationsSection />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

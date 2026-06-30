@@ -1,5 +1,5 @@
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import ServicesHero from './components/ServicesHero';
 import WebsitesSection from './components/WebsitesSection';
 import WebApplicationsSection from './components/WebApplicationsSection';
@@ -40,7 +40,7 @@ export default function ServicesPage() {
 
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen pt-20">
         <ServicesHero />
 
@@ -81,7 +81,7 @@ export default function ServicesPage() {
         <WebApplicationsSection />
         <MobileApplicationsSection />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

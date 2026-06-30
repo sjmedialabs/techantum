@@ -1,36 +1,15 @@
 import Icon from '@/components/ui/AppIcon';
+import { getDefaultContent } from '@/lib/cms/default-content';
 
-export default function StatsSection() {
-  const stats = [
-    {
-      id: 'stat_projects',
-      icon: 'RocketLaunchIcon',
-      value: '150+',
-      label: 'Projects Delivered',
-      description: 'Websites, web apps, and mobile apps',
-    },
-    {
-      id: 'stat_clients',
-      icon: 'UsersIcon',
-      value: '80+',
-      label: 'Happy Clients',
-      description: 'Businesses across industries worldwide',
-    },
-    {
-      id: 'stat_services',
-      icon: 'CubeIcon',
-      value: '3',
-      label: 'Core Services',
-      description: 'Websites, web apps, and mobile apps',
-    },
-    {
-      id: 'stat_years',
-      icon: 'CheckBadgeIcon',
-      value: '8+',
-      label: 'Years Experience',
-      description: 'Building digital products since 2018',
-    },
-  ]
+export default function StatsSection({ content }: { content?: Record<string, unknown> }) {
+  const data = { ...getDefaultContent('homepage.stats'), ...content };
+  const stats = (data.stats as Array<{
+    id: string;
+    icon: string;
+    value: string;
+    label: string;
+    description: string;
+  }>) || [];
 
   return (
     <section className="py-16 bg-muted reveal">
@@ -44,19 +23,13 @@ export default function StatsSection() {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                 <Icon name={stat.icon as any} size={24} className="text-primary" />
               </div>
-              <h3 className="font-bricolage text-4xl font-bold text-foreground mb-2">
-                {stat.value}
-              </h3>
-              <p className="font-inter font-semibold text-base text-foreground mb-1">
-                {stat.label}
-              </p>
-              <p className="font-inter text-sm text-muted-foreground">
-                {stat.description}
-              </p>
+              <h3 className="font-bricolage text-4xl font-bold text-foreground mb-2">{stat.value}</h3>
+              <p className="font-inter font-semibold text-base text-foreground mb-1">{stat.label}</p>
+              <p className="font-inter text-sm text-muted-foreground">{stat.description}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

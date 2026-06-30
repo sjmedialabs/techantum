@@ -9,45 +9,38 @@ import FAQSection from './homepage/components/FAQSection';
 import CTASection from './homepage/components/CTASection';
 import StructuredData from '@/components/StructuredData';
 import { generateOrganizationSchema, generateFAQSchema } from '@/lib/seo';
+import { getBranding, getCmsContent } from '@/lib/cms';
+import { getDefaultContent } from '@/lib/cms/default-content';
 
-const faqData = [
-  {
-    question: 'What services does TechAntum offer?',
-    answer:
-      'We build websites, web applications, and mobile applications. This includes corporate websites, e-commerce stores, custom web apps, SaaS platforms, admin dashboards, native iOS/Android apps, and cross-platform mobile apps.',
-  },
-  {
-    question: 'What technologies do you use?',
-    answer:
-      'We use React, Next.js, TypeScript, Node.js, React Native, Flutter, and cloud platforms like AWS and Supabase. We select the best technology stack based on your project requirements.',
-  },
-  {
-    question: 'How long does a typical project take?',
-    answer:
-      'A website typically takes 2–6 weeks, a web application 6–16 weeks, and a mobile app 8–20 weeks. We provide a detailed timeline during the proposal phase.',
-  },
-  {
-    question: 'Do you provide support after launch?',
-    answer:
-      'Yes. We offer maintenance packages covering bug fixes, security updates, performance monitoring, and feature additions to keep your product running smoothly.',
-  },
-];
+export default async function Homepage() {
+  const branding = await getBranding();
+  const [hero, stats, services, techStack, testimonials, faq, cta] = await Promise.all([
+    getCmsContent('homepage.hero'),
+    getCmsContent('homepage.stats'),
+    getCmsContent('homepage.services'),
+    getCmsContent('homepage.tech_stack'),
+    getCmsContent('homepage.testimonials'),
+    getCmsContent('homepage.faq'),
+    getCmsContent('homepage.cta'),
+  ]);
 
-export default function Homepage() {
+  const faqItems = ((faq.faqs as { question: string; answer: string }[]) ||
+    (getDefaultContent('homepage.faq').faqs as { question: string; answer: string }[]));
+
   return (
     <>
-      <StructuredData data={[generateOrganizationSchema(), generateFAQSchema(faqData)]} />
-      <Header />
+      <StructuredData data={[generateOrganizationSchema(branding), generateFAQSchema(faqItems)]} />
+      <Header branding={branding} />
       <main className="min-h-screen">
-        <HeroSection />
-        <StatsSection />
-        <ProductCategoriesSection />
-        <PartnerCountriesSection />
-        <TestimonialsSection />
-        <FAQSection />
-        <CTASection />
+        <HeroSection content={hero} />
+        <StatsSection content={stats} />
+        <ProductCategoriesSection content={services} />
+        <PartnerCountriesSection content={techStack} />
+        <TestimonialsSection content={testimonials} />
+        <FAQSection content={faq} />
+        <CTASection content={cta} branding={branding} />
       </main>
-      <Footer />
+      <Footer branding={branding} />
     </>
   );
 }

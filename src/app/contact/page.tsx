@@ -1,5 +1,5 @@
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import ContactHero from './components/ContactHero';
 import ContactForm from './components/ContactForm';
 import CompanyInfo from './components/CompanyInfo';
@@ -7,7 +7,7 @@ import CompanyInfo from './components/CompanyInfo';
 export default function ContactPage() {
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen pt-20">
         <ContactHero />
         <div className="py-16 reveal">
@@ -23,7 +23,7 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

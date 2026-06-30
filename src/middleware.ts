@@ -27,19 +27,20 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  // Content Security Policy
+  // Content Security Policy — skip upgrade-insecure-requests on localhost (breaks HTTP dev)
+  const isDev = process.env.NODE_ENV !== 'production';
   const cspHeader = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com",
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
-    "font-src 'self' data:",
+    "font-src 'self' data: https://fonts.gstatic.com",
     "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com",
     "frame-src 'self' https://www.google.com https://pagead2.googlesyndication.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    "upgrade-insecure-requests",
+    ...(isDev ? [] : ['upgrade-insecure-requests']),
   ].join('; ');
   
   response.headers.set('Content-Security-Policy', cspHeader);
@@ -55,6 +56,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
   ],
 };

@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+import type { SiteBranding } from '@/lib/cms/types';
+import { defaultBranding } from '@/lib/cms/default-content';
 
 interface SEOConfig {
   title: string;
@@ -103,27 +105,27 @@ export function generateProductSchema(product: {
   };
 }
 
-export function generateOrganizationSchema() {
+export function generateOrganizationSchema(branding: SiteBranding = defaultBranding) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techantum.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: SITE_NAME,
-    url: SITE_URL,
-    logo: `${SITE_URL}/icon-512.png`,
-    description:
-      'IT company specializing in website development, custom web applications, and mobile app development for businesses worldwide.',
+    name: branding.company_name,
+    url: siteUrl,
+    logo: `${siteUrl}/icon-512.png`,
+    description: branding.footer_description,
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'IN',
       addressLocality: 'Hyderabad',
       addressRegion: 'Telangana',
       postalCode: '500033',
-      streetAddress: 'Plot no 118, 3rd Floor, Brundavanam, Road no 3 Kakatiya Hills, Guttala_Begumpet Madhapur, Jubilee Hills',
+      streetAddress: branding.address,
     },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Service',
-      email: 'info@techantum.com',
+      email: branding.email,
       availableLanguage: ['English', 'Dutch'],
     },
     sameAs: [

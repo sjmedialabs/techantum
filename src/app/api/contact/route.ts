@@ -3,6 +3,7 @@ import { checkRateLimit, getRateLimitIdentifier } from '@/lib/security/rateLimit
 import { validateCSRFToken } from '@/lib/security/csrf';
 import { sanitizeString, sanitizeEmail, sanitizePhone } from '@/lib/security/sanitize';
 import { createClient } from '@/lib/supabase/server';
+import { sendContactConfirmation, sendContactNotification } from '@/lib/email/resend';
 
 export async function POST(request: NextRequest) {
   try {
@@ -98,14 +99,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email via Edge Function
-    const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
-      body: sanitizedData,
-    });
+    // Send email via Resend
+    const emailData = {
+      name: sanitizedData.name,
+      country: sanitizedData.country,
+      email: sanitizedData.email,
+      phone: sanitizedData.phone,
+      productCategory: sanitizedData.productCategory,
+      quantity: sanitizedData.quantity,
+      message: sanitizedData.message,
+    };
 
-    if (emailError) {
-      console.error('Email error:', emailError);
-      // Don't fail the request - form was saved
+    const [notifyResult, confirmResult] = await Promise.all([
+      sendContactNotification(emailData),
+      sendContactConfirmation(emailData),
+    ]);
+
+    if (!notifyResult.ok) {
+      console.error('Notification email error:', notifyResult.error);
+    }
+    if (!confirmResult.ok) {
+      console.error('Confirmation email error:', confirmResult.error);
     }
 
     return NextResponse.json({

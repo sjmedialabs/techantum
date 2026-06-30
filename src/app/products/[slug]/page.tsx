@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import ServicePageClient from './ServicePageClient';
 import CookingOilsSection from '../components/CookingOilsSection';
 import ChickenFeedSection from '../components/ChickenFeedSection';
@@ -94,13 +94,13 @@ export default async function ServiceCategoryPage({
 
   return (
     <>
-      <Header />
+      <SiteHeader />
       <ServicePageClient>
         <main className="min-h-screen pt-20">
           <SectionComponent />
         </main>
       </ServicePageClient>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

@@ -1,7 +1,9 @@
 import Link from 'next/link';
  import Icon from '@/components/ui/AppIcon';
+import { defaultBranding } from '@/lib/cms/default-content';
+import type { SiteBranding } from '@/lib/cms/types';
 
-export default function Footer() {
+export default function Footer({ branding = defaultBranding }: { branding?: SiteBranding }) {
   const serviceLinks = [
     { id: 'svc_websites', label: 'Websites', href: '/services#websites' },
     { id: 'svc_webapps', label: 'Web Applications', href: '/services#web-applications' },
@@ -26,36 +28,45 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
           <div className="md:col-span-4">
-            <h3 className="font-bricolage font-bold text-xl text-foreground mb-4">
-              TechAntum
-            </h3>
+            {branding.footer_logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={branding.footer_logo_url}
+                alt={branding.company_name}
+                className="h-10 w-auto max-w-[200px] object-contain mb-4"
+              />
+            ) : (
+              <h3 className="font-bricolage font-bold text-xl text-foreground mb-4">
+                {branding.company_name}
+              </h3>
+            )}
             <p className="font-inter text-sm text-muted-foreground mb-4">
-              We build websites, web applications, and mobile apps that help businesses grow in the digital world.
+              {branding.footer_description}
             </p>
             <div className="space-y-2 text-sm text-muted-foreground">
               <p className="flex items-start gap-2">
                 <Icon name="MapPinIcon" size={16} className="mt-0.5 shrink-0" />
-                <span>Plot no 118, 3rd Floor, Brundavanam, Road no 3 Kakatiya Hills, Guttala_Begumpet Madhapur, Jubilee Hills, Hyderabad, Telangana - 500033</span>
+                <span>{branding.address}</span>
               </p>
               <p className="flex items-center gap-2">
                 <Icon name="PhoneIcon" size={16} className="shrink-0" />
-                <a href="tel:+914040268570" className="hover:text-primary transition-colors">
-                  +91 40 40268570
+                <a href={`tel:${branding.phone_href}`} className="hover:text-primary transition-colors">
+                  {branding.phone}
                 </a>
                 <a
-                  href="https://wa.me/917032923474"
+                  href={`https://wa.me/${branding.whatsapp_href}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors ml-1"
-                  title="WhatsApp +91 70329 23474"
+                  title={`WhatsApp ${branding.whatsapp}`}
                 >
                   <Icon name="ChatBubbleLeftRightIcon" size={16} className="shrink-0" />
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <Icon name="EnvelopeIcon" size={16} className="shrink-0" />
-                <a href="mailto:info@techantum.com" className="hover:text-primary transition-colors">
-                  info@techantum.com
+                <a href={`mailto:${branding.email}`} className="hover:text-primary transition-colors">
+                  {branding.email}
                 </a>
               </p>
             </div>
@@ -118,7 +129,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-inter text-sm text-muted-foreground">
-            © 2026 TechAntum. All rights reserved.
+            {branding.copyright_text}
           </p>
           <div className="flex items-center gap-4">
             <Link

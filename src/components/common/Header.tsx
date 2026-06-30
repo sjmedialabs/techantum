@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
  import Link from 'next/link';
 import { usePathname } from 'next/navigation';
  import Icon from '@/components/ui/AppIcon';
+import { defaultBranding } from '@/lib/cms/default-content';
+import type { SiteBranding } from '@/lib/cms/types';
 
-export default function Header() {
+export default function Header({ branding = defaultBranding }: { branding?: SiteBranding }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
@@ -35,18 +37,21 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg shrink-0">
-              <span className="font-bricolage font-bold text-base sm:text-lg text-primary-foreground">T</span>
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="font-bricolage font-bold text-sm sm:text-base text-foreground leading-tight truncate">
-                TechAntum
-              </span>
-              <span className="font-inter text-[10px] sm:text-xs text-muted-foreground leading-tight hidden sm:block">
-                Digital Solutions
-              </span>
-            </div>
+          <Link href="/" className="flex items-center shrink-0" aria-label={branding.company_name}>
+            {branding.logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={branding.logo_url}
+                alt={branding.company_name}
+                className="h-10 sm:h-12 w-auto max-w-[180px] sm:max-w-[220px] object-contain"
+              />
+            ) : (
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg shrink-0">
+                <span className="font-bricolage font-bold text-lg sm:text-xl text-primary-foreground">
+                  {branding.logo_letter}
+                </span>
+              </div>
+            )}
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
@@ -68,27 +73,27 @@ export default function Header() {
             <div className="flex flex-col text-right">
               <div className="flex items-center gap-3">
                 <a
-                  href="tel:+914040268570"
+                  href={`tel:${branding.phone_href}`}
                   className="font-inter text-sm font-medium text-foreground hover:text-primary transition-colors flex items-center gap-2"
                 >
                   <Icon name="PhoneIcon" size={16} />
-                  +91 40 40268570
+                  {branding.phone}
                 </a>
                 <a
-                  href="https://wa.me/917032923474"
+                  href={`https://wa.me/${branding.whatsapp_href}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground hover:text-primary transition-colors"
-                  title="WhatsApp +91 70329 23474"
+                  title={`WhatsApp ${branding.whatsapp}`}
                 >
                   <Icon name="ChatBubbleLeftRightIcon" size={16} />
                 </a>
               </div>
               <a
-                href="mailto:info@techantum.com"
+                href={`mailto:${branding.email}`}
                 className="font-inter text-xs text-muted-foreground hover:text-primary transition-colors"
               >
-                info@techantum.com
+                {branding.email}
               </a>
             </div>
             <Link
@@ -127,27 +132,27 @@ export default function Header() {
               <div className="pt-4 border-t border-border space-y-2">
                 <div className="flex items-center gap-3">
                   <a
-                    href="tel:+914040268570"
+                    href={`tel:${branding.phone_href}`}
                     className="font-inter text-sm font-medium text-foreground hover:text-primary transition-colors flex items-center gap-2"
                   >
                     <Icon name="PhoneIcon" size={16} />
-                    +91 40 40268570
+                    {branding.phone}
                   </a>
                   <a
-                    href="https://wa.me/917032923474"
+                    href={`https://wa.me/${branding.whatsapp_href}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-foreground hover:text-primary transition-colors"
-                    title="WhatsApp +91 70329 23474"
+                    title={`WhatsApp ${branding.whatsapp}`}
                   >
                     <Icon name="ChatBubbleLeftRightIcon" size={16} />
                   </a>
                 </div>
                 <a
-                  href="mailto:info@techantum.com"
+                  href={`mailto:${branding.email}`}
                   className="font-inter text-sm text-muted-foreground hover:text-primary transition-colors block"
                 >
-                  info@techantum.com
+                  {branding.email}
                 </a>
                 <Link
                   href="/contact"

@@ -4,6 +4,9 @@ import { Suspense } from 'react';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ScrollRevealProvider from '@/components/common/ScrollRevealProvider';
 import WhatsAppWidget from '@/components/common/WhatsAppWidget';
+import { getBranding, getSeo } from '@/lib/cms';
+import { defaultSeo } from '@/lib/cms/default-content';
+import { getMetadataBase } from '@/lib/cms/url';
 import '../styles/index.css';
 
 export const viewport: Viewport = {
@@ -11,79 +14,78 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://techantum.com'),
-  title: {
-    default: 'TechAntum | Websites, Web Apps & Mobile App Development',
-    template: '%s | TechAntum',
-  },
-  description:
-    'TechAntum is an IT company specializing in website development, custom web applications, and mobile app development. We build digital products that help businesses grow.',
-  keywords: [
-    'web development',
-    'website development',
-    'web application development',
-    'mobile app development',
-    'React development',
-    'Next.js development',
-    'TechAntum',
-    'software development company',
-    'custom software',
-  ],
-  authors: [{ name: 'TechAntum' }],
-  creator: 'TechAntum',
-  publisher: 'TechAntum',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const [seo, branding] = await Promise.all([getSeo(), getBranding()]);
+
+  const favicon = branding.favicon_url;
+
+  return {
+    metadataBase: getMetadataBase(seo.site_url),
+    title: {
+      default: seo.site_title || defaultSeo.site_title,
+      template: seo.title_template || defaultSeo.title_template,
+    },
+    description: seo.description || defaultSeo.description,
+    keywords: seo.keywords?.length ? seo.keywords : defaultSeo.keywords,
+    authors: [{ name: 'TechAntum' }],
+    creator: 'TechAntum',
+    publisher: 'TechAntum',
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-    ],
-    apple: { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
-    shortcut: '/favicon.ico',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: '/',
-    siteName: 'TechAntum',
-    title: 'TechAntum | Websites, Web Apps & Mobile App Development',
-    description:
-      'IT company specializing in website development, custom web applications, and mobile app development.',
-    images: [
-      {
-        url: '/assets/images/Hollandse-1771785992532.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'TechAntum - Digital Solutions Company',
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
       },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'TechAntum | Websites, Web Apps & Mobile App Development',
-    description:
-      'IT company specializing in website development, custom web applications, and mobile app development.',
-    images: ['/assets/images/Hollandse-1771785992532.jpg'],
-    creator: '@techantum',
-  },
-  verification: {
-    google: '84fEzKK3VJyDEiImbSG47IfCyMdkEGZlbFIo-QeHi6U',
-  },
-};
+    },
+    icons: favicon
+      ? {
+          icon: [{ url: favicon }],
+          apple: { url: favicon },
+          shortcut: favicon,
+        }
+      : {
+          icon: [
+            { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
+            { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+            { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+          ],
+          apple: { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
+          shortcut: '/favicon.ico',
+        },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: '/',
+      siteName: 'TechAntum',
+      title: seo.site_title || defaultSeo.site_title,
+      description: seo.description || defaultSeo.description,
+      images: [
+        {
+          url: seo.og_image_url || defaultSeo.og_image_url,
+          width: 1200,
+          height: 630,
+          alt: 'TechAntum - Digital Solutions Company',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.site_title || defaultSeo.site_title,
+      description: seo.description || defaultSeo.description,
+      images: [seo.og_image_url || defaultSeo.og_image_url],
+      creator: seo.twitter_handle || defaultSeo.twitter_handle,
+    },
+    verification: {
+      google: seo.google_verification || defaultSeo.google_verification,
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -110,7 +112,7 @@ export default function RootLayout({
         </Suspense>
         <ScrollRevealProvider />
         {children}
-        <WhatsAppWidget phoneNumber="917032923474" />
+        <WhatsAppWidget phoneNumber={process.env.NEXT_PUBLIC_WHATSAPP || '917032923474'} />
       </body>
     </html>
   );

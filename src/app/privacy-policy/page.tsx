@@ -1,13 +1,13 @@
 'use client';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import Link from 'next/link';
 import Icon from '@/components/ui/AppIcon';
 
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="pt-32 pb-16 bg-gradient-to-br from-primary/5 via-background to-secondary/5 page-hero reveal">
@@ -469,7 +469,7 @@ export default function PrivacyPolicyPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

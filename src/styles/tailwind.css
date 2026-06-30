@@ -386,4 +386,26 @@
       transform: none !important;
     }
   }
+
+  /* Tiptap CMS editor */
+  .cms-rich-text .tiptap {
+    @apply min-h-[120px] px-3 py-2 focus:outline-none;
+  }
+
+  .cms-rich-text .tiptap p.is-editor-empty:first-child::before {
+    @apply text-muted-foreground pointer-events-none float-left h-0;
+    content: attr(data-placeholder);
+  }
+
+  .cms-rich-text .tiptap ul {
+    @apply list-disc pl-5 my-2;
+  }
+
+  .cms-rich-text .tiptap ol {
+    @apply list-decimal pl-5 my-2;
+  }
+
+  .cms-rich-text .tiptap a {
+    @apply text-primary underline;
+  }
 }

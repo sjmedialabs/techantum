@@ -1,5 +1,5 @@
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import PortfolioHero from './components/PortfolioHero';
 import IndustriesSection from './components/IndustriesSection';
 import FeaturedProjectsSection from './components/FeaturedProjectsSection';
@@ -9,7 +9,7 @@ import PortfolioCTA from './components/PortfolioCTA';
 export default function PortfolioPage() {
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen pt-20">
         <PortfolioHero />
         <IndustriesSection />
@@ -17,7 +17,7 @@ export default function PortfolioPage() {
         <IndustryProjectsSection />
         <PortfolioCTA />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

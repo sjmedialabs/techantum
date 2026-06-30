@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import SiteHeader from '@/components/common/SiteHeader';
+import SiteFooter from '@/components/common/SiteFooter';
 import TestimonialsHero from './components/TestimonialsHero';
 import TestimonialFilters from './components/TestimonialFilters';
 import TestimonialGrid from './components/TestimonialGrid';
@@ -13,7 +13,7 @@ export default function TestimonialsPage() {
 
   return (
     <>
-      <Header />
+      <SiteHeader />
       <main className="min-h-screen pt-20">
         <TestimonialsHero />
         <TestimonialFilters
@@ -27,7 +27,7 @@ export default function TestimonialsPage() {
           selectedCountry={selectedCountry}
         />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }
