@@ -21,6 +21,7 @@ export const defaultBranding: SiteBranding = {
   phone_href: '+914040268570',
   whatsapp: '+91 70329 23474',
   whatsapp_href: '917032923474',
+  whatsapp_widget_message: 'Hello! I would like to inquire about your services.',
   email: 'info@techantum.com',
   address:
     'Plot no 118, 3rd Floor, Brundavanam, Road no 3 Kakatiya Hills, Guttala_Begumpet Madhapur, Jubilee Hills, Hyderabad, Telangana - 500033',
@@ -28,6 +29,32 @@ export const defaultBranding: SiteBranding = {
     'We build websites, web applications, and mobile apps that help businesses grow in the digital world.',
   copyright_text: '© 2026 TechAntum. All rights reserved.',
 };
+
+const BRANDING_TEXT_KEYS: (keyof SiteBranding)[] = [
+  'company_name',
+  'tagline',
+  'logo_letter',
+  'phone',
+  'phone_href',
+  'whatsapp',
+  'whatsapp_href',
+  'whatsapp_widget_message',
+  'email',
+  'address',
+  'footer_description',
+  'copyright_text',
+];
+
+/** DB nulls must not override defaults — keeps form inputs controlled with strings. */
+export function normalizeSiteBranding(data?: Partial<SiteBranding> | null): SiteBranding {
+  const merged = { ...defaultBranding, ...data };
+  for (const key of BRANDING_TEXT_KEYS) {
+    if (merged[key] == null) {
+      merged[key] = defaultBranding[key] as SiteBranding[typeof key];
+    }
+  }
+  return merged;
+}
 
 export const defaultSeo: SiteSeo = {
   site_title: 'TechAntum | Websites, Web Apps & Mobile App Development',
@@ -70,28 +97,8 @@ export const defaultCmsEntries: CmsEntry[] = [
       primaryCtaHref: '/contact',
       secondaryCta: 'View Services',
       secondaryCtaHref: '/services',
-      cardTitle: 'Why Choose TechAntum?',
-      features: [
-        {
-          icon: 'CodeBracketIcon',
-          title: 'Modern Tech Stack',
-          description: 'React, Next.js, TypeScript, and cloud-native architecture',
-        },
-        {
-          icon: 'RocketLaunchIcon',
-          title: 'End-to-End Delivery',
-          description: 'Design, development, deployment, and ongoing support',
-        },
-        {
-          icon: 'UserGroupIcon',
-          title: 'Client-Focused Approach',
-          description: 'Transparent communication and agile project management',
-        },
-      ],
-      stat1Label: 'Projects Delivered',
-      stat1Value: '150+',
-      stat2Label: 'Happy Clients',
-      stat2Value: '80+',
+      cardTitle: 'How can we help you?',
+      serviceOptions: ['Websites', 'Web Applications', 'Mobile Applications', 'Multiple Services', 'Other'],
     },
   },
   {

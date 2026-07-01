@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { defaultBranding } from '@/lib/cms/default-content';
+import { defaultBranding, normalizeSiteBranding } from '@/lib/cms/default-content';
 import type { SiteBranding } from '@/lib/cms/types';
 
 const BRANDING_KEYS: (keyof SiteBranding)[] = [
@@ -15,6 +15,7 @@ const BRANDING_KEYS: (keyof SiteBranding)[] = [
   'phone_href',
   'whatsapp',
   'whatsapp_href',
+  'whatsapp_widget_message',
   'email',
   'address',
   'footer_description',
@@ -30,7 +31,12 @@ function pickBrandingFields(body: Record<string, unknown>): Record<string, unkno
 }
 
 function isMissingColumnError(message: string) {
-  return message.includes('footer_logo_url') || message.includes('favicon_url') || message.includes('schema cache');
+  return (
+    message.includes('footer_logo_url') ||
+    message.includes('favicon_url') ||
+    message.includes('whatsapp_widget_message') ||
+    message.includes('schema cache')
+  );
 }
 
 export async function GET() {
@@ -39,7 +45,7 @@ export async function GET() {
 
   const supabase = createAdminClient();
   const { data } = await supabase.from('site_branding').select('*').eq('id', 1).maybeSingle();
-  return NextResponse.json({ ...defaultBranding, ...data });
+  return NextResponse.json(normalizeSiteBranding(data ?? undefined));
 }
 
 export async function PUT(request: Request) {
@@ -53,7 +59,12 @@ export async function PUT(request: Request) {
   let { data, error } = await supabase.from('site_branding').upsert(payload).select('*').single();
 
   if (error && isMissingColumnError(error.message)) {
-    const { footer_logo_url: _f, favicon_url: _i, ...rest } = payload;
+    const {
+      footer_logo_url: _f,
+      favicon_url: _i,
+      whatsapp_widget_message: _w,
+      ...rest
+    } = payload;
     payload = rest;
     ({ data, error } = await supabase.from('site_branding').upsert(payload).select('*').single());
   }
@@ -62,5 +73,5 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ...defaultBranding, ...data });
+  return NextResponse.json(normalizeSiteBranding(data ?? undefined));
 }

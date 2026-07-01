@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { SiteBranding } from '@/lib/cms/types';
-import { defaultBranding } from '@/lib/cms/default-content';
+import { defaultBranding, normalizeSiteBranding } from '@/lib/cms/default-content';
 
 type AssetType = 'logo' | 'footer_logo' | 'favicon';
 
@@ -16,7 +16,7 @@ export default function BrandingAdminPage() {
   useEffect(() => {
     fetch('/api/admin/branding')
       .then((r) => r.json())
-      .then((data) => setForm({ ...defaultBranding, ...data }))
+      .then((data) => setForm(normalizeSiteBranding(data)))
       .finally(() => setLoading(false));
   }, []);
 
@@ -36,7 +36,7 @@ export default function BrandingAdminPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Save failed');
-      setForm(data);
+      setForm(normalizeSiteBranding(data));
       setMessage('Branding saved.');
     } catch (err) {
       setMessage(err instanceof Error ? err.message : 'Save failed');
@@ -84,7 +84,7 @@ export default function BrandingAdminPage() {
       type: 'footer_logo',
       label: 'Footer logo',
       url: form.footer_logo_url,
-      hint: 'Shown in the footer. Falls back to company name if empty.',
+      hint: 'Shown in the footer. Uses navbar logo if empty.',
     },
     {
       type: 'favicon',
@@ -133,6 +133,49 @@ export default function BrandingAdminPage() {
           ))}
         </div>
 
+        <div className="rounded-xl border border-border bg-muted/20 p-5 space-y-4">
+          <div>
+            <h2 className="font-semibold text-foreground">WhatsApp</h2>
+            <p className="text-xs text-muted-foreground mt-1">
+              Controls the floating WhatsApp button, header/footer links, and contact page.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">WhatsApp number (display)</label>
+              <input
+                value={form.whatsapp}
+                onChange={(e) => update('whatsapp', e.target.value)}
+                placeholder="+91 70329 23474"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm bg-white"
+              />
+              <p className="text-xs text-muted-foreground mt-1">Shown to visitors with formatting.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">WhatsApp number (link)</label>
+              <input
+                value={form.whatsapp_href}
+                onChange={(e) => update('whatsapp_href', e.target.value)}
+                placeholder="917032923474"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm bg-white"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Digits only — country code + number, no + or spaces. Used by the floating button.
+              </p>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">WhatsApp pre-filled message</label>
+            <textarea
+              value={form.whatsapp_widget_message ?? ''}
+              onChange={(e) => update('whatsapp_widget_message', e.target.value)}
+              rows={2}
+              placeholder="Hello! I would like to inquire about your services."
+              className="w-full rounded-lg border border-border px-3 py-2 text-sm bg-white"
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {(
             [
@@ -141,9 +184,7 @@ export default function BrandingAdminPage() {
               ['logo_letter', 'Logo letter (fallback)'],
               ['email', 'Email'],
               ['phone', 'Phone display'],
-              ['phone_href', 'Phone href (digits only)'],
-              ['whatsapp', 'WhatsApp display'],
-              ['whatsapp_href', 'WhatsApp href (country code + number)'],
+              ['phone_href', 'Phone link (digits only)'],
             ] as const
           ).map(([key, label]) => (
             <div key={key}>

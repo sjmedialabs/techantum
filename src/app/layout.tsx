@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ScrollRevealProvider from '@/components/common/ScrollRevealProvider';
-import WhatsAppWidget from '@/components/common/WhatsAppWidget';
+import WhatsAppWidgetLoader from '@/components/common/WhatsAppWidgetLoader';
 import { getBranding, getSeo } from '@/lib/cms';
 import { defaultSeo } from '@/lib/cms/default-content';
 import { getMetadataBase } from '@/lib/cms/url';
@@ -110,7 +110,7 @@ export default async function RootLayout({
         </Suspense>
         <ScrollRevealProvider />
         {children}
-        <WhatsAppWidget phoneNumber={process.env.NEXT_PUBLIC_WHATSAPP || '917032923474'} />
+        <WhatsAppWidgetLoader />
       </body>
     </html>
   );

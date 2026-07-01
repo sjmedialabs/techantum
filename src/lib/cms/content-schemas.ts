@@ -44,24 +44,9 @@ export const contentSchemas: Record<string, ContentSchema> = {
       { key: 'primaryCtaHref', label: 'Primary button link', type: 'text' },
       { key: 'secondaryCta', label: 'Secondary button text', type: 'text' },
       { key: 'secondaryCtaHref', label: 'Secondary button link', type: 'text' },
-      { key: 'cardTitle', label: 'Card title', type: 'text' },
-      { key: 'stat1Label', label: 'Stat 1 label', type: 'text' },
-      { key: 'stat1Value', label: 'Stat 1 value', type: 'text' },
-      { key: 'stat2Label', label: 'Stat 2 label', type: 'text' },
-      { key: 'stat2Value', label: 'Stat 2 value', type: 'text' },
+      { key: 'cardTitle', label: 'Hero form title', type: 'text' },
     ],
-    arrays: [
-      {
-        key: 'features',
-        label: 'Feature cards',
-        itemLabel: 'Feature',
-        fields: [
-          { key: 'icon', label: 'Icon name (Heroicon)', type: 'text' },
-          { key: 'title', label: 'Title', type: 'text' },
-          { key: 'description', label: 'Description', type: 'textarea' },
-        ],
-      },
-    ],
+    stringLists: [{ key: 'serviceOptions', label: 'Hero form service options', itemLabel: 'Service' }],
   },
   'homepage.stats': {
     arrays: [

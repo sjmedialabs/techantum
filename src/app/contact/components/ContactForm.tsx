@@ -81,6 +81,7 @@ export default function ContactForm({ page }: ContactFormProps) {
           productCategory: data.service,
           quantity: data.timeline,
           message: data.message || '',
+          source: 'contact_page',
           csrfToken,
           honeypot,
         }),
@@ -215,7 +216,7 @@ export default function ContactForm({ page }: ContactFormProps) {
               id="email"
               {...register('email')}
               className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground font-inter text-base focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-              placeholder="your@email.com"
+              placeholder="Enter your email address"
             />
             {errors.email && (
               <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
@@ -230,7 +231,7 @@ export default function ContactForm({ page }: ContactFormProps) {
               id="tel"
               {...register('tel')}
               className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground font-inter text-base focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-              placeholder="+91 40 40268570"
+              placeholder="Enter your phone number"
             />
             {errors.tel && (
               <p className="mt-1 text-sm text-red-600">{errors.tel.message}</p>
@@ -268,7 +269,7 @@ export default function ContactForm({ page }: ContactFormProps) {
             id="timeline"
             {...register('timeline')}
             className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground font-inter text-base focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-            placeholder="e.g., Launch in 3 months, budget €10,000–€20,000"
+            placeholder="Enter your timeline or budget"
           />
           {errors.timeline && (
             <p className="mt-1 text-sm text-red-600">{errors.timeline.message}</p>
@@ -284,7 +285,7 @@ export default function ContactForm({ page }: ContactFormProps) {
             {...register('message')}
             rows={5}
             className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground font-inter text-base focus:ring-2 focus:ring-ring focus:border-transparent transition-all resize-none"
-            placeholder="Describe your project goals, target audience, key features, or any specific requirements..."
+            placeholder="Enter your project details"
           />
           {errors.message && (
             <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>

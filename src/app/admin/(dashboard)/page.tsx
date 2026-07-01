@@ -54,6 +54,12 @@ export default function AdminDashboardPage() {
         <h2 className="font-semibold text-foreground">Quick actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
+            href="/admin/submissions"
+            className="px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/15"
+          >
+            View leads ({stats.formSubmissions})
+          </Link>
+          <Link
             href="/admin/branding"
             className="px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/15"
           >

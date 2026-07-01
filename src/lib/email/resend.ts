@@ -4,13 +4,19 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 
 export interface ContactEmailData {
   name: string;
-  country: string;
-  email: string;
   phone: string;
   productCategory: string;
-  quantity: string;
-  message: string;
+  source?: string;
+  country?: string;
+  email?: string;
+  quantity?: string;
+  message?: string;
 }
+
+const SOURCE_LABELS: Record<string, string> = {
+  homepage_hero: 'Homepage hero form',
+  contact_page: 'Contact page form',
+};
 
 function escapeHtml(value: string): string {
   return value
@@ -21,15 +27,26 @@ function escapeHtml(value: string): string {
 }
 
 function buildContactEmailHtml(data: ContactEmailData): string {
-  const rows = [
-    ['Full Name', data.name],
-    ['Country', data.country],
-    ['Email Address', data.email],
-    ['Phone Number', data.phone],
-    ['Service Required', data.productCategory],
-    ['Timeline / Budget', data.quantity],
-    ['Additional Message', data.message || '—'],
-  ];
+  const sourceLabel = SOURCE_LABELS[data.source || 'contact_page'] || data.source || 'Website form';
+  const isHero = data.source === 'homepage_hero';
+
+  const rows = isHero
+    ? [
+        ['Full Name', data.name],
+        ['Phone Number', data.phone],
+        ['Service Required', data.productCategory],
+        ['Form Source', sourceLabel],
+      ]
+    : [
+        ['Full Name', data.name],
+        ['Country', data.country || '—'],
+        ['Email Address', data.email || '—'],
+        ['Phone Number', data.phone],
+        ['Service Required', data.productCategory],
+        ['Timeline / Budget', data.quantity || '—'],
+        ['Additional Message', data.message || '—'],
+        ['Form Source', sourceLabel],
+      ];
 
   const tableRows = rows
     .map(
@@ -40,6 +57,10 @@ function buildContactEmailHtml(data: ContactEmailData): string {
         </tr>`
     )
     .join('');
+
+  const replyNote = data.email && data.email.includes('@')
+    ? `Reply directly to <a href="mailto:${escapeHtml(data.email)}" style="color:#EF4323;">${escapeHtml(data.email)}</a> to continue the conversation.`
+    : `Contact the lead by phone at <strong>${escapeHtml(data.phone)}</strong>.`;
 
   return `<!DOCTYPE html>
 <html>
@@ -52,15 +73,15 @@ function buildContactEmailHtml(data: ContactEmailData): string {
           <tr>
             <td style="background:linear-gradient(135deg,#000000,#EF4323);padding:28px 32px;">
               <p style="margin:0 0 4px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);">TechAntum</p>
-              <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">New Project Inquiry</h1>
-              <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.9);">Submitted via techantum.com contact form</p>
+              <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">New Lead — ${escapeHtml(sourceLabel)}</h1>
+              <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.9);">Submitted via techantum.com</p>
             </td>
           </tr>
           <tr>
             <td style="padding:28px 32px 8px;">
               <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.6;">
                 Dear Team,<br><br>
-                A prospective client has submitted a project inquiry. Please review the details below and respond within 24 hours.
+                A prospective client has submitted an inquiry. Please review the details below and respond within 24 hours.
               </p>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:4px;border-collapse:collapse;">
                 ${tableRows}
@@ -69,9 +90,7 @@ function buildContactEmailHtml(data: ContactEmailData): string {
           </tr>
           <tr>
             <td style="padding:16px 32px 28px;">
-              <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.5;">
-                Reply directly to <a href="mailto:${escapeHtml(data.email)}" style="color:#EF4323;">${escapeHtml(data.email)}</a> to continue the conversation.
-              </p>
+              <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.5;">${replyNote}</p>
             </td>
           </tr>
           <tr>
@@ -95,16 +114,21 @@ export async function sendContactNotification(data: ContactEmailData): Promise<{
   }
 
   const to = process.env.CONTACT_INBOX || 'info@techantum.com';
-  const from =
-    process.env.RESEND_FROM_EMAIL || 'TechAntum <onboarding@resend.dev>';
+  const from = process.env.RESEND_FROM_EMAIL || 'TechAntum <onboarding@resend.dev>';
+  const sourceLabel = SOURCE_LABELS[data.source || 'contact_page'] || 'Website';
 
-  const { error } = await resend.emails.send({
+  const payload: Parameters<typeof resend.emails.send>[0] = {
     from,
     to: [to],
-    replyTo: data.email,
-    subject: `[TechAntum] New inquiry from ${data.name} — ${data.productCategory}`,
+    subject: `[TechAntum] New lead from ${data.name} — ${data.productCategory} (${sourceLabel})`,
     html: buildContactEmailHtml(data),
-  });
+  };
+
+  if (data.email && data.email.includes('@')) {
+    payload.replyTo = data.email;
+  }
+
+  const { error } = await resend.emails.send(payload);
 
   if (error) {
     return { ok: false, error: error.message };
@@ -118,8 +142,11 @@ export async function sendContactConfirmation(data: ContactEmailData): Promise<{
     return { ok: false, error: 'RESEND_API_KEY is not configured' };
   }
 
-  const from =
-    process.env.RESEND_FROM_EMAIL || 'TechAntum <onboarding@resend.dev>';
+  if (!data.email || !data.email.includes('@')) {
+    return { ok: true };
+  }
+
+  const from = process.env.RESEND_FROM_EMAIL || 'TechAntum <onboarding@resend.dev>';
 
   const { error } = await resend.emails.send({
     from,

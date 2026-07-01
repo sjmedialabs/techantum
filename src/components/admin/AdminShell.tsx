@@ -8,6 +8,7 @@ import { CMS_PAGE_GROUPS } from '@/lib/cms/admin-nav';
 
 const mainNav = [
   { href: '/admin', label: 'Overview', exact: true },
+  { href: '/admin/submissions', label: 'Leads' },
   { href: '/admin/branding', label: 'Branding' },
   { href: '/admin/seo', label: 'SEO' },
 ];

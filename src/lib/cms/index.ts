@@ -7,6 +7,7 @@ import {
   getDefaultContent,
   getDefaultContentMap,
   mergeCmsContent,
+  normalizeSiteBranding,
 } from './default-content';
 import type { CmsSnapshot, SiteBranding, SiteSeo } from './types';
 
@@ -14,7 +15,7 @@ export const getBranding = cache(async (): Promise<SiteBranding> => {
   try {
     const supabase = createAdminClient();
     const { data } = await supabase.from('site_branding').select('*').eq('id', 1).maybeSingle();
-    if (data) return { ...defaultBranding, ...data } as SiteBranding;
+    if (data) return normalizeSiteBranding(data as Partial<SiteBranding>);
   } catch {
     /* fall through to defaults */
   }

@@ -4,6 +4,7 @@ import { defaultBranding } from '@/lib/cms/default-content';
 import type { SiteBranding } from '@/lib/cms/types';
 
 export default function Footer({ branding = defaultBranding }: { branding?: SiteBranding }) {
+  const footerLogo = branding.footer_logo_url || branding.logo_url;
   const serviceLinks = [
     { id: 'svc_websites', label: 'Websites', href: '/services#websites' },
     { id: 'svc_webapps', label: 'Web Applications', href: '/services#web-applications' },
@@ -28,10 +29,10 @@ export default function Footer({ branding = defaultBranding }: { branding?: Site
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
           <div className="md:col-span-4">
-            {branding.footer_logo_url ? (
+            {footerLogo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={branding.footer_logo_url}
+                src={footerLogo}
                 alt={branding.company_name}
                 className="h-12 w-auto object-contain mb-4"
               />
