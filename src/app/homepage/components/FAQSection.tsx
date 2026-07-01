@@ -24,7 +24,7 @@ export default function FAQSection({ content }: { content?: Record<string, unkno
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-12 reveal">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">{String(data.title)}</h2>
-          <CmsRichText html={String(data.description)} as="p" className="text-lg text-muted-foreground max-w-2xl mx-auto" />
+          <CmsRichText html={String(data.description ?? '')} className="text-lg text-muted-foreground max-w-2xl mx-auto" />
         </div>
 
         <div className="space-y-4 reveal reveal-stagger">
@@ -41,7 +41,7 @@ export default function FAQSection({ content }: { content?: Record<string, unkno
               </button>
               {openIndex === index && (
                 <div className="px-6 pb-6">
-                  <CmsRichText html={faq.answer} as="p" className="font-inter text-muted-foreground leading-relaxed" />
+                  <CmsRichText html={faq.answer} className="font-inter text-muted-foreground leading-relaxed" />
                 </div>
               )}
             </div>

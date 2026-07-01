@@ -1,15 +1,30 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import CmsMediaFit from '@/components/cms/CmsMediaFit';
 
-const VIDEO_SRC = '/videos/hero-bg.mp4';
-const VIDEO_FALLBACK =
-  'https://assets.mixkit.co/videos/19639/19639-720.mp4';
-const POSTER_SRC = '/videos/hero-bg-poster.jpg';
+const DEFAULT_VIDEO = '/videos/hero-bg.mp4';
+const DEFAULT_POSTER = '/videos/hero-bg-poster.jpg';
+const DEFAULT_FALLBACK = 'https://assets.mixkit.co/videos/19639/19639-720.mp4';
 
-export default function HeroVideoBackground() {
+interface HeroVideoBackgroundProps {
+  videoUrl?: string;
+  posterUrl?: string;
+  fallbackVideoUrl?: string;
+}
+
+export default function HeroVideoBackground({
+  videoUrl = DEFAULT_VIDEO,
+  posterUrl = DEFAULT_POSTER,
+  fallbackVideoUrl = DEFAULT_FALLBACK,
+}: HeroVideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [activeSrc, setActiveSrc] = useState(videoUrl || DEFAULT_VIDEO);
+
+  useEffect(() => {
+    setActiveSrc(videoUrl || DEFAULT_VIDEO);
+  }, [videoUrl]);
 
   useEffect(() => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -34,31 +49,41 @@ export default function HeroVideoBackground() {
       motionQuery.removeEventListener('change', onChange);
       video.removeEventListener('loadeddata', play);
     };
-  }, []);
+  }, [activeSrc, reduceMotion]);
+
+  const poster = posterUrl || DEFAULT_POSTER;
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       {reduceMotion ? (
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center scale-105"
-          style={{ backgroundImage: `url(${POSTER_SRC})` }}
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          <CmsMediaFit src={poster} kind="image" alt="" />
+        </div>
       ) : (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover scale-105 animate-ken-burns"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={POSTER_SRC}
-          aria-hidden="true"
-        >
-          <source src={VIDEO_SRC} type="video/mp4" />
-          <source src={VIDEO_FALLBACK} type="video/mp4" />
-        </video>
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            ref={videoRef}
+            key={activeSrc}
+            className="block w-full h-full max-w-full max-h-full object-cover object-center"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={poster}
+            aria-hidden="true"
+            onError={() => {
+              if (fallbackVideoUrl && activeSrc !== fallbackVideoUrl) {
+                setActiveSrc(fallbackVideoUrl);
+              }
+            }}
+          >
+            <source src={activeSrc} type="video/mp4" />
+            {fallbackVideoUrl && activeSrc !== fallbackVideoUrl && (
+              <source src={fallbackVideoUrl} type="video/mp4" />
+            )}
+          </video>
+        </div>
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/95 to-background/70" />
       <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background/40 to-secondary/20" />

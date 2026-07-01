@@ -69,6 +69,7 @@ export default function BrandingAdminPage() {
       setMessage(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setUploading(null);
+      e.target.value = '';
     }
   };
 
@@ -185,7 +186,11 @@ export default function BrandingAdminPage() {
           />
         </div>
 
-        {message && <p className="text-sm text-muted-foreground">{message}</p>}
+        {message && (
+          <p className={`text-sm ${message.includes('migration') || message.includes('column') ? 'text-secondary' : 'text-muted-foreground'}`}>
+            {message}
+          </p>
+        )}
 
         <button
           type="submit"

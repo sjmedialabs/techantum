@@ -22,7 +22,7 @@ export default function TestimonialsSection({ content }: { content?: Record<stri
             {String(data.eyebrow)}
           </span>
           <h2 className="font-bricolage text-4xl md:text-5xl font-bold text-foreground mb-4">{String(data.title)}</h2>
-          <CmsRichText html={String(data.description)} as="p" className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto" />
+          <CmsRichText html={String(data.description ?? '')} className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 reveal reveal-stagger">

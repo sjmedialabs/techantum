@@ -21,7 +21,7 @@ export default function CTASection({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="font-bricolage text-4xl md:text-5xl font-bold text-primary-foreground mb-4">{String(data.title)}</h2>
-            <CmsRichText html={String(data.description)} as="p" className="font-inter text-lg text-primary-foreground/90 mb-6" />
+            <CmsRichText html={String(data.description ?? '')} className="font-inter text-lg text-primary-foreground/90 mb-6" />
             <ul className="space-y-3 mb-8">
               {bullets.map((bullet) => (
                 <li key={bullet} className="flex items-center gap-3 text-primary-foreground">

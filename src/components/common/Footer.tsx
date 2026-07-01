@@ -33,7 +33,7 @@ export default function Footer({ branding = defaultBranding }: { branding?: Site
               <img
                 src={branding.footer_logo_url}
                 alt={branding.company_name}
-                className="h-10 w-auto max-w-[200px] object-contain mb-4"
+                className="h-12 w-auto object-contain mb-4"
               />
             ) : (
               <h3 className="font-bricolage font-bold text-xl text-foreground mb-4">

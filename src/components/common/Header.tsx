@@ -43,11 +43,11 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
               <img
                 src={branding.logo_url}
                 alt={branding.company_name}
-                className="h-10 sm:h-12 w-auto max-w-[180px] sm:max-w-[220px] object-contain"
+                className="h-12 w-auto object-contain"
               />
             ) : (
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg shrink-0">
-                <span className="font-bricolage font-bold text-lg sm:text-xl text-primary-foreground">
+              <div className="h-12 w-12 rounded-xl bg-brand-gradient flex items-center justify-center shadow-lg shrink-0">
+                <span className="font-bricolage font-bold text-lg text-primary-foreground">
                   {branding.logo_letter}
                 </span>
               </div>
@@ -61,7 +61,7 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
                 href={link?.href}
                 className={`font-inter text-sm font-medium transition-colors ${
                   pathname === link?.href
-                    ? 'text-primary' :'text-foreground hover:text-primary'
+                    ? 'text-secondary' :'text-foreground hover:text-secondary'
                 }`}
               >
                 {link?.label}
@@ -98,7 +98,7 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
             </div>
             <Link
               href="/contact"
-              className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-inter font-medium text-sm hover:bg-primary/90 transition-colors btn-shine"
+              className="bg-secondary text-secondary-foreground px-6 py-2.5 rounded-full font-inter font-medium text-sm hover:bg-secondary/90 transition-colors btn-shine"
             >
               Get a Quote
             </Link>
@@ -114,7 +114,7 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
         </div>
 
         {isMenuOpen && (
-          <div className="lg:hidden py-4 sm:py-6 border-t border-white/40 bg-white/90 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="lg:hidden py-4 sm:py-6 border-t border-white/40 bg-white/90 backdrop-blur-xl max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-5rem)] overflow-y-auto">
             <nav className="flex flex-col gap-1 sm:gap-2">
               {navLinks?.map((link) => (
                 <Link
@@ -123,7 +123,7 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
                   onClick={() => setIsMenuOpen(false)}
                   className={`font-inter text-base font-medium py-2 transition-colors ${
                     pathname === link?.href
-                      ? 'text-primary' :'text-foreground hover:text-primary'
+                      ? 'text-secondary' :'text-foreground hover:text-secondary'
                   }`}
                 >
                   {link?.label}
@@ -156,7 +156,7 @@ export default function Header({ branding = defaultBranding }: { branding?: Site
                 </a>
                 <Link
                   href="/contact"
-                  className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-inter font-medium text-sm hover:bg-primary/90 transition-colors inline-block mt-2"
+                  className="bg-secondary text-secondary-foreground px-6 py-2.5 rounded-full font-inter font-medium text-sm hover:bg-secondary/90 transition-colors inline-block mt-2"
                 >
                   Get a Quote
                 </Link>

@@ -3,6 +3,11 @@ import {
   industries,
   industryProjectGroups,
 } from '@/lib/portfolio-data';
+import { defaultServicesPageContent } from '@/lib/services-data';
+import { testimonialsList } from '@/lib/testimonials-data';
+import { defaultContactPageContent } from '@/lib/contact-data';
+import { defaultAboutPageContent } from '@/lib/about-data';
+import { blogArticles } from '@/lib/blog-data';
 import type { CmsEntry, SiteBranding, SiteSeo } from './types';
 
 export const defaultBranding: SiteBranding = {
@@ -52,6 +57,9 @@ export const defaultCmsEntries: CmsEntry[] = [
     entry_group: 'homepage',
     label: 'Homepage Hero',
     content: {
+      heroVideoUrl: '/videos/hero-bg.mp4',
+      heroPosterUrl: '/videos/hero-bg-poster.jpg',
+      heroVideoFallbackUrl: 'https://assets.mixkit.co/videos/19639/19639-720.mp4',
       badge: 'Available for new projects',
       eyebrow: 'IT Services Company',
       titleLine1: 'Build Your Digital',
@@ -305,6 +313,12 @@ export const defaultCmsEntries: CmsEntry[] = [
     },
   },
   {
+    entry_key: 'services.page',
+    entry_group: 'services',
+    label: 'Services Page',
+    content: defaultServicesPageContent as unknown as Record<string, unknown>,
+  },
+  {
     entry_key: 'services.hero',
     entry_group: 'services',
     label: 'Services Hero',
@@ -324,9 +338,17 @@ export const defaultCmsEntries: CmsEntry[] = [
       title: 'Building Digital Products Since 2018',
       description:
         'TechAntum is an IT company specializing in website development, custom web applications, and mobile app development. We partner with businesses worldwide to turn ideas into scalable digital products.',
+      description2:
+        'From startups launching their first product to enterprises modernizing legacy systems, we deliver scalable, user-focused digital solutions with transparent communication and agile delivery.',
       image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c',
       imageAlt: 'TechAntum team collaborating on software development project',
     },
+  },
+  {
+    entry_key: 'about.page',
+    entry_group: 'about',
+    label: 'About Page',
+    content: defaultAboutPageContent as unknown as Record<string, unknown>,
   },
   {
     entry_key: 'portfolio.hero',
@@ -344,9 +366,29 @@ export const defaultCmsEntries: CmsEntry[] = [
     entry_group: 'portfolio',
     label: 'Portfolio Projects',
     content: {
+      industriesEyebrow: 'Industries We Serve',
+      industriesTitle: 'Cross-Industry Expertise',
+      industriesDescription:
+        'Deep experience delivering digital platforms tailored to the needs of diverse business sectors.',
+      featuredEyebrow: 'Featured Projects',
+      featuredTitle: 'Flagship Platforms',
+      featuredDescription:
+        'Scalable, conversion-focused digital products built for real business impact.',
       industries,
       featuredProjects,
       industryProjectGroups,
+    },
+  },
+  {
+    entry_key: 'portfolio.cta',
+    entry_group: 'portfolio',
+    label: 'Portfolio CTA',
+    content: {
+      title: "Let's Build Something Exceptional",
+      description:
+        'We help businesses transform ideas into scalable digital platforms — from strategy and design to development and deployment.',
+      ctaText: 'Start Your Project',
+      ctaHref: '/contact',
     },
   },
   {
@@ -361,6 +403,12 @@ export const defaultCmsEntries: CmsEntry[] = [
     },
   },
   {
+    entry_key: 'contact.page',
+    entry_group: 'contact',
+    label: 'Contact Page',
+    content: defaultContactPageContent as unknown as Record<string, unknown>,
+  },
+  {
     entry_key: 'blog.hero',
     entry_group: 'blog',
     label: 'Blog Hero',
@@ -369,6 +417,22 @@ export const defaultCmsEntries: CmsEntry[] = [
       title: 'TechAntum Blog',
       description:
         'Articles on web development, mobile apps, technology trends, and digital product strategy.',
+    },
+  },
+  {
+    entry_key: 'blog.posts',
+    entry_group: 'blog',
+    label: 'Blog Posts',
+    content: {
+      articles: blogArticles,
+    },
+  },
+  {
+    entry_key: 'testimonials.page',
+    entry_group: 'testimonials',
+    label: 'Testimonials Page',
+    content: {
+      testimonials: testimonialsList,
     },
   },
   {
@@ -394,4 +458,21 @@ export function getDefaultContentMap(): Record<string, Record<string, unknown>> 
 export function getDefaultContent(key: string): Record<string, unknown> {
   const entry = defaultCmsEntries.find((item) => item.entry_key === key);
   return entry?.content ?? {};
+}
+
+/** Merge CMS content over defaults, skipping empty values so partial saves don't wipe fields. */
+export function mergeCmsContent(
+  key: string,
+  content?: Record<string, unknown>
+): Record<string, unknown> {
+  const defaults = getDefaultContent(key);
+  if (!content) return defaults;
+
+  const merged = { ...defaults };
+  for (const [field, value] of Object.entries(content)) {
+    if (value === null || value === undefined) continue;
+    if (typeof value === 'string' && value.trim() === '') continue;
+    merged[field] = value;
+  }
+  return merged;
 }

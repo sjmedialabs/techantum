@@ -4,7 +4,7 @@ function Error({ statusCode }: { statusCode?: number }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: 'bold', color: '#2563eb', opacity: 0.3 }}>
+        <h1 style={{ fontSize: '3rem', fontWeight: 'bold', color: '#000000', opacity: 0.3 }}>
           {statusCode || 'Error'}
         </h1>
         <p style={{ color: '#666', marginTop: '1rem' }}>

@@ -1,56 +1,41 @@
+import Link from 'next/link';
 import SiteHeader from '@/components/common/SiteHeader';
 import SiteFooter from '@/components/common/SiteFooter';
-import ServicesHero from './components/ServicesHero';
-import WebsitesSection from './components/WebsitesSection';
-import WebApplicationsSection from './components/WebApplicationsSection';
-import MobileApplicationsSection from './components/MobileApplicationsSection';
-import Link from 'next/link';
+import PageHeroSection from '@/components/common/PageHeroSection';
 import Icon from '@/components/ui/AppIcon';
+import { getCmsContent } from '@/lib/cms';
+import { mergeCmsContent } from '@/lib/cms/default-content';
+import type { ServiceCategory, ServiceSection as ServiceSectionData } from '@/lib/services-data';
+import ServiceSection from './components/ServiceSection';
 
-export default function ServicesPage() {
-  const serviceCategories = [
-    {
-      id: 'cat_websites',
-      name: 'Websites',
-      description: '6 offerings',
-      href: '/services#websites',
-      icon: 'ComputerDesktopIcon',
-      iconClass: 'text-primary',
-      bgClass: 'bg-primary/10 group-hover:bg-primary/20',
-    },
-    {
-      id: 'cat_webapps',
-      name: 'Web Applications',
-      description: '6 offerings',
-      href: '/services#web-applications',
-      icon: 'CodeBracketIcon',
-      iconClass: 'text-secondary',
-      bgClass: 'bg-secondary/10 group-hover:bg-secondary/20',
-    },
-    {
-      id: 'cat_mobile',
-      name: 'Mobile Applications',
-      description: '6 offerings',
-      href: '/services#mobile-applications',
-      icon: 'DevicePhoneMobileIcon',
-      iconClass: 'text-accent',
-      bgClass: 'bg-accent/10 group-hover:bg-accent/20',
-    },
-  ];
+export default async function ServicesPage() {
+  const [heroContent, pageContent] = await Promise.all([
+    getCmsContent('services.hero'),
+    getCmsContent('services.page'),
+  ]);
+
+  const hero = mergeCmsContent('services.hero', heroContent);
+  const page = mergeCmsContent('services.page', pageContent);
+  const categories = (page.categories as ServiceCategory[]) ?? [];
+  const sections = (page.sections as ServiceSectionData[]) ?? [];
 
   return (
     <>
       <SiteHeader />
       <main className="min-h-screen pt-20">
-        <ServicesHero />
+        <PageHeroSection
+          eyebrow={String(hero.eyebrow)}
+          title={String(hero.title)}
+          description={String(hero.description)}
+        />
 
         <section className="py-12 bg-muted/50 reveal">
           <div className="max-w-7xl mx-auto px-6">
             <h2 className="font-bricolage text-3xl font-bold text-foreground mb-8 text-center reveal-fade">
-              Explore Our Services
+              {String(page.exploreTitle || 'Explore Our Services')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 reveal reveal-stagger">
-              {serviceCategories.map((category) => (
+              {categories.map((category) => (
                 <Link
                   key={category.id}
                   href={category.href}
@@ -77,9 +62,9 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <WebsitesSection />
-        <WebApplicationsSection />
-        <MobileApplicationsSection />
+        {sections.map((section) => (
+          <ServiceSection key={section.id} section={section} />
+        ))}
       </main>
       <SiteFooter />
     </>

@@ -14,10 +14,14 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const [seo, branding] = await Promise.all([getSeo(), getBranding()]);
 
-  const favicon = branding.favicon_url;
+  const cacheKey = branding.favicon_url
+    ? encodeURIComponent(branding.favicon_url.split('/').pop() || '1')
+    : 'default';
 
   return {
     metadataBase: getMetadataBase(seo.site_url),
@@ -41,21 +45,14 @@ export async function generateMetadata(): Promise<Metadata> {
         'max-snippet': -1,
       },
     },
-    icons: favicon
-      ? {
-          icon: [{ url: favicon }],
-          apple: { url: favicon },
-          shortcut: favicon,
-        }
-      : {
-          icon: [
-            { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
-            { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-            { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-          ],
-          apple: { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
-          shortcut: '/favicon.ico',
-        },
+    icons: {
+      icon: [
+        { url: `/favicon.ico?v=${cacheKey}`, sizes: 'any' },
+        { url: `/icon?v=${cacheKey}`, type: 'image/png', sizes: '32x32' },
+      ],
+      apple: { url: `/apple-icon?v=${cacheKey}`, sizes: '180x180' },
+      shortcut: `/favicon.ico?v=${cacheKey}`,
+    },
     openGraph: {
       type: 'website',
       locale: 'en_US',
@@ -100,6 +97,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://assets.mixkit.co" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
 
+        <link rel="manifest" href="/site.webmanifest" />
         {/* Font optimization with font-display swap */}
         <link
           rel="stylesheet"

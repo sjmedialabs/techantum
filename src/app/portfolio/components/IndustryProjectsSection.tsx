@@ -1,7 +1,25 @@
 import Icon from '@/components/ui/AppIcon';
-import { industryProjectGroups } from '@/lib/portfolio-data';
 
-export default function IndustryProjectsSection() {
+interface IndustryProject {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  tags: string[];
+}
+
+interface IndustryProjectGroup {
+  id: string;
+  title: string;
+  subtitle: string;
+  projects: IndustryProject[];
+}
+
+export default function IndustryProjectsSection({
+  groups,
+}: {
+  groups: IndustryProjectGroup[];
+}) {
   return (
     <section className="py-16 reveal">
       <div className="max-w-7xl mx-auto px-6">
@@ -18,7 +36,7 @@ export default function IndustryProjectsSection() {
         </div>
 
         <div className="space-y-16">
-          {industryProjectGroups.map((group) => (
+          {groups.map((group) => (
             <div key={group.id} id={group.id} className="reveal">
               <div className="mb-8 reveal-left">
                 <h3 className="font-bricolage text-3xl font-bold text-foreground mb-2">{group.title}</h3>

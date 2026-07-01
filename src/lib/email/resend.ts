@@ -50,7 +50,7 @@ function buildContactEmailHtml(data: ContactEmailData): string {
       <td align="center">
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:4px;overflow:hidden;">
           <tr>
-            <td style="background:linear-gradient(135deg,#4f46e5,#7c3aed);padding:28px 32px;">
+            <td style="background:linear-gradient(135deg,#000000,#EF4323);padding:28px 32px;">
               <p style="margin:0 0 4px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);">TechAntum</p>
               <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">New Project Inquiry</h1>
               <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.9);">Submitted via techantum.com contact form</p>
@@ -70,7 +70,7 @@ function buildContactEmailHtml(data: ContactEmailData): string {
           <tr>
             <td style="padding:16px 32px 28px;">
               <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.5;">
-                Reply directly to <a href="mailto:${escapeHtml(data.email)}" style="color:#4f46e5;">${escapeHtml(data.email)}</a> to continue the conversation.
+                Reply directly to <a href="mailto:${escapeHtml(data.email)}" style="color:#EF4323;">${escapeHtml(data.email)}</a> to continue the conversation.
               </p>
             </td>
           </tr>

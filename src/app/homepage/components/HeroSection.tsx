@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Icon from '@/components/ui/AppIcon';
 import HeroVideoBackground from '@/components/common/HeroVideoBackground';
 import CmsRichText from '@/components/cms/CmsRichText';
-import { getDefaultContent } from '@/lib/cms/default-content';
+import { mergeCmsContent } from '@/lib/cms/default-content';
 
 interface HeroFeature {
   icon: string;
@@ -11,12 +11,16 @@ interface HeroFeature {
 }
 
 export default function HeroSection({ content }: { content?: Record<string, unknown> }) {
-  const data = { ...getDefaultContent('homepage.hero'), ...content };
+  const data = mergeCmsContent('homepage.hero', content);
   const features = (data.features as HeroFeature[]) || [];
 
   return (
-    <section className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden pt-16 sm:pt-20 pb-28 md:pb-20">
-      <HeroVideoBackground />
+    <section className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 pb-28 md:pb-20">
+      <HeroVideoBackground
+        videoUrl={String(data.heroVideoUrl || '')}
+        posterUrl={String(data.heroPosterUrl || '')}
+        fallbackVideoUrl={String(data.heroVideoFallbackUrl || '')}
+      />
 
       <div className="hidden sm:block absolute top-1/4 -left-32 w-64 md:w-96 h-64 md:h-96 rounded-full bg-primary/20 blur-3xl pointer-events-none animate-float" />
       <div className="hidden sm:block absolute bottom-1/4 -right-32 w-64 md:w-96 h-64 md:h-96 rounded-full bg-secondary/20 blur-3xl pointer-events-none animate-float-delayed" />
@@ -43,8 +47,7 @@ export default function HeroSection({ content }: { content?: Record<string, unkn
             </h1>
 
             <CmsRichText
-              html={String(data.description)}
-              as="p"
+              html={String(data.description ?? '')}
               className="font-inter text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl hero-subtext animate-hero-in animate-hero-in-delay-3"
             />
 

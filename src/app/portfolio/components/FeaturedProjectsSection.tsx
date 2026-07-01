@@ -1,24 +1,34 @@
 import Icon from '@/components/ui/AppIcon';
-import { featuredProjects } from '@/lib/portfolio-data';
+import type { PortfolioProject } from '@/lib/portfolio-data';
 
-export default function FeaturedProjectsSection() {
+interface FeaturedProjectsSectionProps {
+  eyebrow: string;
+  title: string;
+  description: string;
+  projects: PortfolioProject[];
+}
+
+export default function FeaturedProjectsSection({
+  eyebrow,
+  title,
+  description,
+  projects,
+}: FeaturedProjectsSectionProps) {
   return (
     <section id="featured" className="py-16 bg-muted/50 reveal">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <span className="font-inter text-sm uppercase tracking-wider text-primary font-medium mb-3 block">
-            Featured Projects
+            {eyebrow}
           </span>
           <h2 className="font-bricolage text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Flagship Platforms
+            {title}
           </h2>
-          <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto">
-            Scalable, conversion-focused digital products built for real business impact.
-          </p>
+          <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto">{description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 reveal reveal-stagger">
-          {featuredProjects.map((project) => (
+          {projects.map((project) => (
             <article
               key={project.id}
               className="bg-card rounded-2xl border border-border overflow-hidden hover-lift glow-card flex flex-col"

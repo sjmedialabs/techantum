@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import MediaUploadField from '@/components/admin/MediaUploadField';
 import {
   getContentSchema,
   type ArrayFieldSchema,
@@ -17,6 +18,7 @@ interface ContentFormEditorProps {
 function getFieldValue(obj: Record<string, unknown>, key: string, type: FieldSchema['type']): string {
   const raw = obj[key];
   if (raw === undefined || raw === null) return '';
+  if (type === 'lines' && Array.isArray(raw)) return raw.map(String).join('\n');
   if (type === 'number') return String(raw);
   return String(raw);
 }
@@ -28,7 +30,12 @@ function setFieldValue(
   value: string
 ): Record<string, unknown> {
   const next = { ...obj };
-  if (type === 'number') {
+  if (type === 'lines') {
+    next[key] = value
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+  } else if (type === 'number') {
     next[key] = value === '' ? 0 : Number(value);
   } else {
     next[key] = value;
@@ -51,13 +58,37 @@ function FieldInput({
     return <RichTextEditor value={value} onChange={onChange} placeholder={field.placeholder} />;
   }
 
-  if (field.type === 'textarea') {
+  if (field.type === 'image') {
+    return (
+      <MediaUploadField
+        label=""
+        value={value}
+        onChange={onChange}
+        mediaType="image"
+        hint={field.placeholder || 'PNG, JPG, WebP, or SVG. Fits within placeholder — no overflow.'}
+      />
+    );
+  }
+
+  if (field.type === 'video') {
+    return (
+      <MediaUploadField
+        label=""
+        value={value}
+        onChange={onChange}
+        mediaType="video"
+        hint={field.placeholder || 'MP4 or WebM, max 50 MB. Recommended: 1920×1080.'}
+      />
+    );
+  }
+
+  if (field.type === 'textarea' || field.type === 'lines') {
     return (
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        rows={3}
-        placeholder={field.placeholder}
+        rows={field.type === 'lines' ? 4 : 3}
+        placeholder={field.placeholder || (field.type === 'lines' ? 'One item per line' : undefined)}
         className={inputClass}
       />
     );
@@ -72,6 +103,19 @@ function FieldInput({
       className={inputClass}
     />
   );
+}
+
+function fieldSpanClass(field: FieldSchema): string {
+  if (
+    field.type === 'richtext' ||
+    field.type === 'textarea' ||
+    field.type === 'image' ||
+    field.type === 'video' ||
+    field.type === 'lines'
+  ) {
+    return 'md:col-span-2';
+  }
+  return '';
 }
 
 function ArrayEditor({
@@ -129,7 +173,7 @@ function ArrayEditor({
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {schema.fields.map((field) => (
-              <div key={field.key} className={field.type === 'richtext' || field.type === 'textarea' ? 'md:col-span-2' : ''}>
+              <div key={field.key} className={fieldSpanClass(field)}>
                 <label className="block text-sm font-medium mb-1">{field.label}</label>
                 <FieldInput
                   field={field}
@@ -139,6 +183,20 @@ function ArrayEditor({
               </div>
             ))}
           </div>
+          {schema.subArrays?.map((sub) => {
+            const subItems = Array.isArray(item[sub.key])
+              ? (item[sub.key] as Record<string, unknown>[])
+              : [];
+            return (
+              <div key={sub.key} className="mt-4 pl-3 border-l-2 border-border">
+                <ArrayEditor
+                  schema={sub}
+                  items={subItems}
+                  onChange={(next) => updateItem(index, { ...item, [sub.key]: next })}
+                />
+              </div>
+            );
+          })}
         </div>
       ))}
       {items.length === 0 && (
@@ -222,10 +280,7 @@ export default function ContentFormEditor({ entryKey, content, onChange }: Conte
       {schema.fields && schema.fields.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {schema.fields.map((field) => (
-            <div
-              key={field.key}
-              className={field.type === 'richtext' || field.type === 'textarea' ? 'md:col-span-2' : ''}
-            >
+            <div key={field.key} className={fieldSpanClass(field)}>
               <label className="block text-sm font-medium mb-1">{field.label}</label>
               <FieldInput
                 field={field}

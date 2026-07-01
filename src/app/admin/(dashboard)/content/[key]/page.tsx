@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ContentFormEditor from '@/components/admin/ContentFormEditor';
 import { getContentSchema } from '@/lib/cms/content-schemas';
+import { mergeCmsContent } from '@/lib/cms/default-content';
+import { getDefaultEntryMeta } from '@/lib/cms/merge-entries';
 
 export default function ContentEditPage() {
   const params = useParams();
@@ -24,9 +26,10 @@ export default function ContentEditPage() {
     fetch(`/api/admin/content/${encodeURIComponent(key)}`)
       .then((r) => r.json())
       .then((data) => {
-        setEntryGroup(data.entry_group || key.split('.')[0] || 'general');
-        setLabel(data.label || key);
-        const loaded = data.content || {};
+        const defaults = getDefaultEntryMeta(key);
+        setEntryGroup(data.entry_group || defaults?.entry_group || key.split('.')[0] || 'general');
+        setLabel(data.label || defaults?.label || key);
+        const loaded = mergeCmsContent(key, data.content);
         setContent(loaded);
         setJsonText(JSON.stringify(loaded, null, 2));
       })

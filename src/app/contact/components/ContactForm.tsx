@@ -18,7 +18,11 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function ContactForm() {
+interface ContactFormProps {
+  page: Record<string, unknown>;
+}
+
+export default function ContactForm({ page }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -57,13 +61,7 @@ export default function ContactForm() {
     'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Vietnam',
   ];
 
-  const services = [
-    'Websites',
-    'Web Applications',
-    'Mobile Applications',
-    'Multiple Services',
-    'Other',
-  ];
+  const services = (page.serviceOptions as string[]) ?? [];
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -122,10 +120,10 @@ export default function ContactForm() {
   return (
     <div className="bg-card rounded-2xl p-8 shadow-sm border border-border">
       <h2 className="font-bricolage text-3xl font-bold text-foreground mb-2">
-        Start Your Project
+        {String(page.formTitle)}
       </h2>
       <p className="font-inter text-base text-muted-foreground mb-6">
-        Tell us about your project and we&apos;ll get back to you within 24 hours with a free consultation.
+        {String(page.formDescription)}
       </p>
 
       {submitStatus === 'success' && (
@@ -133,10 +131,10 @@ export default function ContactForm() {
           <Icon name="CheckCircleIcon" size={24} className="text-success shrink-0" variant="solid" />
           <div>
             <p className="font-inter font-semibold text-sm text-success mb-1">
-              Project Inquiry Submitted!
+              {String(page.successTitle)}
             </p>
             <p className="font-inter text-sm text-success/80">
-              Thank you for contacting TechAntum. We&apos;ll respond to your inquiry within 24 hours.
+              {String(page.successMessage)}
             </p>
           </div>
         </div>
@@ -147,7 +145,7 @@ export default function ContactForm() {
           <Icon name="ExclamationCircleIcon" size={24} className="text-red-600 shrink-0" variant="solid" />
           <div>
             <p className="font-inter font-semibold text-sm text-red-600 mb-1">
-              Submission Failed
+              {String(page.errorTitle)}
             </p>
             <p className="font-inter text-sm text-red-600/80">
               {errorMessage}
@@ -301,18 +299,18 @@ export default function ContactForm() {
           {isSubmitting ? (
             <>
               <Icon name="ArrowPathIcon" size={20} className="animate-spin" />
-              Submitting...
+              {String(page.submittingButton)}
             </>
           ) : (
             <>
-              Submit Project Inquiry
+              {String(page.submitButton)}
               <Icon name="PaperAirplaneIcon" size={20} />
             </>
           )}
         </button>
 
         <p className="font-inter text-xs text-muted-foreground text-center">
-          By submitting this form, you agree to our Privacy Policy. We&apos;ll only use your information to respond to your inquiry.
+          {String(page.privacyNote)}
         </p>
       </form>
     </div>

@@ -7,26 +7,26 @@
     --font-bricolage: 'Bricolage Grotesque', sans-serif;
     --font-inter: 'Inter', sans-serif;
 
-    /* Brand — modern indigo / violet palette */
-    --color-primary: #4F46E5;
+    /* Brand — black & orange */
+    --color-primary: #000000;
     --color-primary-foreground: #FFFFFF;
 
-    --color-secondary: #7C3AED;
+    --color-secondary: #EF4323;
     --color-secondary-foreground: #FFFFFF;
 
-    --color-accent: #A855F7;
+    --color-accent: #EF4323;
     --color-accent-foreground: #FFFFFF;
 
     /* Surfaces */
-    --color-background: #FAFAFF;
+    --color-background: #FFFFFF;
     --color-foreground: #111827;
-    --color-muted: #EEF2FF;
+    --color-muted: #F5F5F5;
     --color-muted-foreground: #6B7280;
 
     /* UI Elements */
-    --color-border: #E0E7FF;
+    --color-border: #E5E5E5;
     --color-input: #FFFFFF;
-    --color-ring: #4F46E5;
+    --color-ring: #000000;
     --color-card: #FFFFFF;
     --color-card-foreground: #111827;
     --color-popover: #FFFFFF;
@@ -37,15 +37,15 @@
     --color-success-foreground: #FFFFFF;
     --color-warning: #F59E0B;
     --color-warning-foreground: #FFFFFF;
-    --color-error: #EF4444;
+    --color-error: #EF4323;
     --color-error-foreground: #FFFFFF;
-    --color-destructive: #EF4444;
+    --color-destructive: #EF4323;
     --color-destructive-foreground: #FFFFFF;
 
-    /* Futuristic accents */
-    --glow-primary: 0 0 40px rgba(79, 70, 229, 0.35);
-    --glow-secondary: 0 0 40px rgba(124, 58, 237, 0.3);
-    --gradient-brand: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #A855F7 100%);
+    /* Brand accents */
+    --glow-primary: 0 0 40px rgba(0, 0, 0, 0.2);
+    --glow-secondary: 0 0 40px rgba(239, 67, 35, 0.35);
+    --gradient-brand: linear-gradient(135deg, #000000 0%, #EF4323 100%);
 
     --radius: 0.75rem;
   }
@@ -58,9 +58,9 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.12), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(124, 58, 237, 0.08), transparent),
-      radial-gradient(ellipse 50% 30% at 0% 100%, rgba(168, 85, 247, 0.06), transparent);
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 0, 0, 0.04), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(239, 67, 35, 0.06), transparent),
+      radial-gradient(ellipse 50% 30% at 0% 100%, rgba(239, 67, 35, 0.04), transparent);
   }
 
   @media (min-width: 768px) {
@@ -75,7 +75,7 @@
   .glass-effect {
     @apply bg-white/70 backdrop-blur-2xl border border-white/40;
     box-shadow:
-      0 4px 24px rgba(79, 70, 229, 0.08),
+      0 4px 24px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 
@@ -281,8 +281,8 @@
   .hover-lift:hover {
     @apply -translate-y-1;
     box-shadow:
-      0 12px 40px rgba(79, 70, 229, 0.15),
-      0 4px 12px rgba(124, 58, 237, 0.1);
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      0 4px 12px rgba(239, 67, 35, 0.1);
   }
 
   /* Marquee */
@@ -333,10 +333,10 @@
   /* Subtle pulse glow for badges */
   @keyframes pulse-glow {
     0%, 100% {
-      box-shadow: 0 0 8px rgba(79, 70, 229, 0.4);
+      box-shadow: 0 0 8px rgba(239, 67, 35, 0.4);
     }
     50% {
-      box-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+      box-shadow: 0 0 20px rgba(239, 67, 35, 0.6);
     }
   }
 
@@ -347,8 +347,8 @@
   /* Futuristic grid overlay (optional section bg) */
   .grid-bg {
     background-image:
-      linear-gradient(rgba(79, 70, 229, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(79, 70, 229, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -407,5 +407,22 @@
 
   .cms-rich-text .tiptap a {
     @apply text-primary underline;
+  }
+
+  .cms-rich-text p {
+    @apply m-0;
+  }
+
+  .cms-rich-text p + p {
+    @apply mt-3;
+  }
+
+  /* CMS media — always fit container, never overflow */
+  .media-fit-cover {
+    @apply block w-full h-full max-w-full max-h-full object-cover object-center;
+  }
+
+  .media-fit-contain {
+    @apply block w-full h-full max-w-full max-h-full object-contain object-center;
   }
 }

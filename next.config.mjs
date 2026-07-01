@@ -33,7 +33,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'img.rocket.new',
+        hostname: '**.supabase.co',
       },
     ],
   },

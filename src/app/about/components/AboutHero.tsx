@@ -1,31 +1,48 @@
 import AppImage from '@/components/ui/AppImage';
+import CmsRichText from '@/components/cms/CmsRichText';
 
-export default function AboutHero() {
+interface AboutHeroProps {
+  eyebrow: string;
+  title: string;
+  description: string;
+  description2: string;
+  image: string;
+  imageAlt: string;
+}
+
+export default function AboutHero({
+  eyebrow,
+  title,
+  description,
+  description2,
+  image,
+  imageAlt,
+}: AboutHeroProps) {
   return (
     <section className="bg-gradient-to-b from-muted to-background page-hero reveal">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="reveal-left">
             <span className="font-inter text-xs sm:text-sm uppercase tracking-wider text-primary font-medium mb-3 sm:mb-4 block">
-              About TechAntum
+              {eyebrow}
             </span>
             <h1 className="font-bricolage text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6">
-              Building Digital Products Since 2018
+              {title}
             </h1>
-            <p className="font-inter text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">
-              TechAntum is an IT company specializing in website development, custom web applications, and mobile app development for businesses of all sizes.
-            </p>
-            <p className="font-inter text-base sm:text-lg text-muted-foreground">
-              From startups launching their first product to enterprises modernizing legacy systems, we deliver scalable, user-focused digital solutions with transparent communication and agile delivery.
-            </p>
+            <CmsRichText
+              html={description}
+              className="font-inter text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6"
+            />
+            {description2 && (
+              <CmsRichText
+                html={description2}
+                className="font-inter text-base sm:text-lg text-muted-foreground"
+              />
+            )}
           </div>
           <div className="relative reveal-right">
             <div className="rounded-2xl overflow-hidden shadow-xl">
-              <AppImage
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c"
-                alt="TechAntum development team collaborating on a software project"
-                className="w-full h-full object-cover"
-              />
+              <AppImage src={image} alt={imageAlt} className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

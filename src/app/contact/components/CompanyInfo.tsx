@@ -1,21 +1,33 @@
 import Icon from '@/components/ui/AppIcon';
+import type { SiteBranding } from '@/lib/cms/types';
 
-export default function CompanyInfo() {
+interface BusinessHour {
+  id: string;
+  label: string;
+  value: string;
+}
+
+interface CompanyInfoProps {
+  page: Record<string, unknown>;
+  branding: SiteBranding;
+}
+
+export default function CompanyInfo({ page, branding }: CompanyInfoProps) {
+  const businessHours = (page.businessHours as BusinessHour[]) ?? [];
+
   return (
     <div className="space-y-6">
       <div className="bg-card rounded-2xl p-6 shadow-sm border border-border">
         <h3 className="font-bricolage text-xl font-semibold text-foreground mb-4">
-          Contact Information
+          {String(page.sidebarContactTitle)}
         </h3>
         <div className="space-y-4">
           <div className="flex items-start gap-3">
             <Icon name="MapPinIcon" size={20} className="text-primary mt-0.5 shrink-0" />
             <div>
               <p className="font-inter text-sm font-medium text-foreground mb-1">Address</p>
-              <p className="font-inter text-sm text-muted-foreground">
-                Plot no 118, 3rd Floor, Brundavanam<br />
-                Road no 3 Kakatiya Hills, Guttala_Begumpet Madhapur<br />
-                Jubilee Hills, Hyderabad, Telangana - 500033
+              <p className="font-inter text-sm text-muted-foreground whitespace-pre-line">
+                {branding.address}
               </p>
             </div>
           </div>
@@ -25,10 +37,10 @@ export default function CompanyInfo() {
             <div className="flex-1">
               <p className="font-inter text-sm font-medium text-foreground mb-1">Phone</p>
               <a
-                href="tel:+914040268570"
+                href={`tel:${branding.phone_href}`}
                 className="font-inter text-sm text-primary hover:underline"
               >
-                +91 40 40268570
+                {branding.phone}
               </a>
             </div>
           </div>
@@ -38,12 +50,12 @@ export default function CompanyInfo() {
             <div className="flex-1">
               <p className="font-inter text-sm font-medium text-foreground mb-1">WhatsApp</p>
               <a
-                href="https://wa.me/917032923474"
+                href={`https://wa.me/${branding.whatsapp_href}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-inter text-sm text-primary hover:underline"
               >
-                +91 70329 23474
+                {branding.whatsapp}
               </a>
             </div>
           </div>
@@ -53,10 +65,10 @@ export default function CompanyInfo() {
             <div>
               <p className="font-inter text-sm font-medium text-foreground mb-1">Email</p>
               <a
-                href="mailto:info@techantum.com"
+                href={`mailto:${branding.email}`}
                 className="font-inter text-sm text-primary hover:underline"
               >
-                info@techantum.com
+                {branding.email}
               </a>
             </div>
           </div>
@@ -65,56 +77,44 @@ export default function CompanyInfo() {
 
       <div className="bg-card rounded-2xl p-6 shadow-sm border border-border">
         <h3 className="font-bricolage text-xl font-semibold text-foreground mb-4">
-          About TechAntum
+          {String(page.sidebarAboutTitle)}
         </h3>
         <div className="space-y-3">
           <div>
             <p className="font-inter text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
               Company
             </p>
-            <p className="font-inter text-sm text-foreground">
-              TechAntum — Digital Solutions
-            </p>
+            <p className="font-inter text-sm text-foreground">{String(page.sidebarAboutCompany)}</p>
           </div>
           <div>
             <p className="font-inter text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
               Services
             </p>
-            <p className="font-inter text-sm text-foreground">
-              Websites · Web Applications · Mobile Applications
-            </p>
+            <p className="font-inter text-sm text-foreground">{String(page.sidebarAboutServices)}</p>
           </div>
           <div>
             <p className="font-inter text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
               Established
             </p>
-            <p className="font-inter text-sm text-foreground">2018</p>
+            <p className="font-inter text-sm text-foreground">{String(page.sidebarAboutEstablished)}</p>
           </div>
         </div>
       </div>
 
       <div className="bg-card rounded-2xl p-6 shadow-sm border border-border">
         <h3 className="font-bricolage text-xl font-semibold text-foreground mb-4">
-          Business Hours
+          {String(page.sidebarHoursTitle)}
         </h3>
         <div className="space-y-2">
-          <div className="flex justify-between font-inter text-sm">
-            <span className="text-foreground">Monday - Friday</span>
-            <span className="text-muted-foreground">9:00 AM - 6:00 PM IST</span>
-          </div>
-          <div className="flex justify-between font-inter text-sm">
-            <span className="text-foreground">Saturday</span>
-            <span className="text-muted-foreground">10:00 AM - 2:00 PM IST</span>
-          </div>
-          <div className="flex justify-between font-inter text-sm">
-            <span className="text-foreground">Sunday</span>
-            <span className="text-muted-foreground">Closed</span>
-          </div>
+          {businessHours.map((row) => (
+            <div key={row.id} className="flex justify-between font-inter text-sm">
+              <span className="text-foreground">{row.label}</span>
+              <span className="text-muted-foreground">{row.value}</span>
+            </div>
+          ))}
         </div>
-        <p className="font-inter text-xs text-muted-foreground mt-4">
-          * We respond to all project inquiries within 24 hours on business days.
-        </p>
+        <p className="font-inter text-xs text-muted-foreground mt-4">{String(page.hoursFootnote)}</p>
       </div>
     </div>
-  )
+  );
 }

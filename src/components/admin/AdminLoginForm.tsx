@@ -42,7 +42,7 @@ export default function AdminLoginForm({ needsSetup }: { needsSetup?: boolean })
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl border border-border shadow-sm p-8">
         <h1 className="font-bricolage text-2xl font-bold text-foreground mb-1">
           {setupMode ? 'Create admin account' : 'Admin sign in'}

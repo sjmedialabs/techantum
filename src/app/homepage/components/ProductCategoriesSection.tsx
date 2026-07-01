@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 import CmsRichText from '@/components/cms/CmsRichText';
 import { getDefaultContent } from '@/lib/cms/default-content';
@@ -24,7 +23,7 @@ export default function ProductCategoriesSection({ content }: { content?: Record
             {String(data.eyebrow)}
           </span>
           <h2 className="font-bricolage text-4xl md:text-5xl font-bold text-foreground mb-4">{String(data.title)}</h2>
-          <CmsRichText html={String(data.description)} as="p" className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto" />
+          <CmsRichText html={String(data.description ?? '')} className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 reveal reveal-stagger">
@@ -34,13 +33,13 @@ export default function ProductCategoriesSection({ content }: { content?: Record
               href={service.href}
               className="group bg-card rounded-2xl overflow-hidden shadow-sm hover-lift glow-card border border-border"
             >
-              <div className="relative h-64 overflow-hidden">
-                <AppImage
+              <div className="relative h-64 overflow-hidden bg-muted">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={service.image}
                   alt={service.imageAlt}
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="absolute inset-0 w-full h-full object-cover object-center max-w-full max-h-full"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">

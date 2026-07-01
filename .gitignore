@@ -26,3 +26,7 @@ next-env.d.ts
 
 # pm2
 .pm2/
+
+# VPS uploads (keep folder, ignore files)
+public/uploads/*
+!public/uploads/.gitkeep

@@ -1,65 +1,20 @@
-export default function TimelineSection() {
-  const milestones = [
-    {
-      id: 'mile_1',
-      year: '2018',
-      title: 'TechAntum Founded',
-      description: 'Started as a web development studio in Hyderabad, India',
-    },
-    {
-      id: 'mile_2',
-      year: '2019',
-      title: 'First Major Clients',
-      description: 'Delivered corporate websites and web apps for clients across Europe',
-    },
-    {
-      id: 'mile_3',
-      year: '2020',
-      title: 'Mobile Development',
-      description: 'Expanded services to include iOS and Android app development',
-    },
-    {
-      id: 'mile_4',
-      year: '2021',
-      title: 'SaaS Expertise',
-      description: 'Built multiple SaaS platforms and admin dashboards for startups',
-    },
-    {
-      id: 'mile_5',
-      year: '2022',
-      title: '50+ Projects',
-      description: 'Reached milestone of 50 successfully delivered digital products',
-    },
-    {
-      id: 'mile_6',
-      year: '2023',
-      title: 'Cloud & DevOps',
-      description: 'Added cloud deployment, CI/CD, and infrastructure services',
-    },
-    {
-      id: 'mile_7',
-      year: '2024',
-      title: '150+ Projects',
-      description: 'Delivered over 150 websites, web apps, and mobile applications',
-    },
-    {
-      id: 'mile_8',
-      year: '2026',
-      title: 'Continued Innovation',
-      description: 'Expanding AI integration, cross-platform development, and enterprise solutions',
-    },
-  ]
+import type { AboutMilestone } from '@/lib/about-data';
 
+interface TimelineSectionProps {
+  title: string;
+  description: string;
+  milestones: AboutMilestone[];
+}
+
+export default function TimelineSection({ title, description, milestones }: TimelineSectionProps) {
   return (
     <section className="py-16 bg-muted reveal">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="font-bricolage text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Our Journey
+            {title}
           </h2>
-          <p className="font-inter text-lg text-muted-foreground max-w-3xl mx-auto">
-            From a small web studio to a full-service IT company — here&apos;s how we&apos;ve grown.
-          </p>
+          <p className="font-inter text-lg text-muted-foreground max-w-3xl mx-auto">{description}</p>
         </div>
 
         <div className="relative">
@@ -90,5 +45,5 @@ export default function TimelineSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
